@@ -1,0 +1,17 @@
+{
+  "name": "ShiftedTone",
+  "short_name": "ShiftedTone",
+  "description": "A voice tone gym for calmer, clearer communication.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9eedd",
+  "theme_color": "#221a15",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
