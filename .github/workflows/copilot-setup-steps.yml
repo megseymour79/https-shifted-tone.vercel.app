@@ -1,0 +1,38 @@
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Patch Copilot Agent to ignore sendPRSummary failures
+        shell: bash
+        run: |
+          python3 -c "
+          import os, glob
+          paths = glob.glob('/home/runner/work/_temp/**/dist-cca-v3/index.js', recursive=True)
+          print('Found paths:', paths)
+          for path in paths:
+              with open(path, 'r') as f:
+                  content = f.read()
+              old_str = 'throw new Error(\n    ' + chr(96) + 'Failed to send pr_summary'
+              new_str = 'logger3.warning(\n    ' + chr(96) + 'Failed to send pr_summary'
+              if old_str in content:
+                  print('Pattern found')
+                  content = content.replace(old_str, new_str)
+                  with open(path, 'w') as f:
+                      f.write(content)
+                  print('Successfully replaced')
+              else:
+                  print('Pattern NOT found')
+          "
